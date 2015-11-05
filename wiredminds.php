@@ -93,14 +93,14 @@ function wp_wm_admin() {
 }
 
 /**
- * Ozutput pixelcode
+ * Output pixelcode
  */
 function wp_wm_pixel() {
 	$wp_wm_custnum = trim(stripslashes(get_option('wp_wm_custnum')));
 	$wp_wm_cnt_server = trim(stripslashes(get_option('wp_wm_cnt_server')), '/');
 	if(!empty($wp_wm_custnum) && !empty($wp_wm_cnt_server)) {
 ?>
-	<!-- wiredminds leadlab tracking with Enterprise Edition V6.4 START -->
+	<!-- wiredminds leadlab tracking V6.4 START -->
 	<script type="text/javascript">
 	<!--
 	var wiredminds = [];
@@ -148,7 +148,7 @@ function wp_wm_pixel() {
 	 alt="" style="border:0px;"/></a>
 	</div>
 	</noscript>
-	<!-- wiredminds leadlab tracking with Enterprise Edition V6.4 END -->
+	<!-- wiredminds leadlab tracking V6.4 END -->
 <?php
 	}
 }
