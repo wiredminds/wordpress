@@ -30,10 +30,23 @@ function wp_wm_admin() {
 	$default_wp_wm_cnt_server = 'testapp.wiredminds.de';
 
 	add_option('wp_wm_custnum', '');
+	add_option('wp_wm_milestones',array());
 	add_option('wp_wm_cnt_server', $default_wp_wm_cnt_server);
-	if (!empty($_POST['action']) && ($_POST['action'] == 'save')) {
-		update_option('wp_wm_custnum', trim($_POST['wp_wm_custnum']));
-		update_option('wp_wm_cnt_server', trim($_POST['wp_wm_cnt_server']));
+	if (!empty($_POST['action'])) {
+	    if($_POST['action'] == 'save'){
+		    update_option('wp_wm_custnum', trim($_POST['wp_wm_custnum']));
+		    update_option('wp_wm_cnt_server', trim($_POST['wp_wm_cnt_server']));
+		}
+		if($_POST['action'] == 'milestone'){
+		    $milestone = get_option('wp_wm_milestones');
+		    if(isset($_POST['delete'])){
+		        unset($milestone[$_POST['delete']]);
+		    }
+		    if(isset($_POST['key'],$_POST['value'])){
+		        $milestone[$_POST['key']]=$_POST['value'];
+		    }
+		    update_option('wp_wm_milestones',$milestone);
+		}
 	}
 	$wp_wm_custnum = stripslashes(get_option('wp_wm_custnum'));
 	$wp_wm_cnt_server = stripslashes(get_option('wp_wm_cnt_server'));
@@ -86,6 +99,47 @@ function wp_wm_admin() {
                         ?> &raquo;" />
                     </div>
                 </form>
+                <hr/>
+                <div class="postbox">
+					<h3 class="hndle"><span>Milestones</span></h3>
+					<div class="inside">
+                        <div style="display: table;">
+                            <?php
+                                $milestones = get_option('wp_wm_milestones');
+                                foreach($milestones as $key => $value):
+                            ?>
+                            <div style="display: table-row;">
+                                <div style="display: table-cell; padding: 5px">
+                                    <?php echo $key; ?>
+                                </div>
+                                <div style="display: table-cell;padding: 5px">
+                                    <?php echo $value; ?>
+                                </div>
+                                <div style="display: table-cell;padding: 5px">
+                                    <form action="" method="post">
+                                        <input type="hidden" name="delete" value="<?php echo $key; ?>"/>
+                                        <input type="hidden" name="action" value="milestone"/>
+                                        <input type="submit" class="button-primary" value="delete"/>
+                                    </form>
+                                </div>
+                            </div>
+                            <?php endforeach; ?>
+                            <div style="display: table-row">
+                                <form action="" method="post">
+                                    <div style="display: table-cell; padding: 5px">
+                                        <input type="text" name="key" value="Name"/>
+                                    </div>
+                                    <div style="display: table-cell; padding: 5px">
+                                        <input type="text" name="value" value="Regex"/>
+                                    </div>
+                                    <div style="display: table-cell; padding: 5px">
+                                        <input type="hidden" name="action" value="milestone">
+                                        <input type="submit" class="button-primary" value="add"/>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
             </div>
         </div>
     </div>
@@ -113,7 +167,15 @@ function wp_wm_pixel() {
 	wiredminds.push(["setTrackParam", "wm_page_name", <?php
 	    echo json_encode(trim(wp_title('', false)));
 	?>]);
+	var wmDynamicConf = [];
+	<?php
+	$milestones = get_option('wp_wm_milestones');
+	foreach($milestones as $key => $value):
+    ?>
+    wmDynamicConf.push(["wm_page_url",<?php echo "\"$value\""; ?>, ["setTrackParam", "wm_milestone", <?php echo "\"$key\""; ?>]]);
+    <?php endforeach; ?>
 	// End own parameters.
+	wiredminds.push(["setDynamicParams", wmDynamicConf]);
 	wiredminds.push(["count"]);
 
 	(function() {
