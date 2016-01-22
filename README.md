@@ -13,6 +13,9 @@ Download the current stable release as a zip-file via the releases menu or use t
 4. Enter your wm_custnum and tracking server at "Settings/wiredminds leadlab"
 
 ## Changelog
+### 1.2
+* Added milestone configuration to backend (Thanks @DustHoff)
+
 ### 1.1
 * Updated plugin to comply with actual tracking code
 * Small code refactoring
