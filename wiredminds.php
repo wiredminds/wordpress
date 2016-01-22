@@ -3,7 +3,7 @@
 Plugin Name: wiredminds leadlab
 Description: wiredminds leadlab tracking pixel integration for WordPress
 Plugin URI: https://github.com/wiredminds-gmbh/wordpress
-Version: 1.1
+Version: 1.2
 Author: wiredminds GmbH
 Author URI: http://www.wiredminds.de
 */
