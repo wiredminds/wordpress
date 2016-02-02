@@ -159,9 +159,14 @@ function wp_wm_admin()
  * Output pixelcode
  */
 function wp_wm_pixel()
-{
+{   
+    ob_start();
     $wp_wm_custnum = trim(stripslashes(get_option('wp_wm_custnum')));
     $wp_wm_cnt_server = trim(stripslashes(get_option('wp_wm_cnt_server')), '/');
+    $wp_wm_page_name = json_encode(trim(wp_title('', false)));
+    $wp_wm_milestones = get_option('wp_wm_milestones');
+    ob_end_clean();
+    
     if (!empty($wp_wm_custnum) && !empty($wp_wm_cnt_server)) {
         ?>
         <!-- wiredminds leadlab tracking V6.4 START -->
@@ -174,17 +179,10 @@ function wp_wm_pixel()
             // Begin own parameters.
             wiredminds.push(["setTrackParam", "wm_campaign_key", "utm_campaign"]);
             wiredminds.push(["registerHeatmapEvent", "mousedown"]);
-            wiredminds.push(["setTrackParam", "wm_page_name", <?php
-                echo json_encode(trim(wp_title('', false)));
-                ?>]);
+            wiredminds.push(["setTrackParam", "wm_page_name", <?php echo $wp_wm_page_name; ?>]);
             var wmDynamicConf = [];
-            <?php
-            $milestones = get_option('wp_wm_milestones');
-            foreach($milestones as $key => $value):
-            ?>
-            wmDynamicConf.push(["wm_page_url",<?php echo "\"$value\""; ?>, ["setTrackParam", "wm_milestone", <?php echo "\"$key\""; ?>]]);
-            <?php endforeach; ?>
-            // End own parameters.
+            <?php foreach($wp_wm_milestones as $key => $value): ?>wmDynamicConf.push(["wm_page_url",<?php echo json_encode($value); ?>, ["setTrackParam", "wm_milestone",<?php echo json_encode($key); ?>]]);
+            <?php endforeach; ?>// End own parameters.
             wiredminds.push(["setDynamicParams", wmDynamicConf]);
             wiredminds.push(["count"]);
 
