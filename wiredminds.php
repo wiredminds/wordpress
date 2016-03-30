@@ -176,13 +176,13 @@ function wp_wm_pixel()
             wiredminds.push(["setTrackParam", "wm_custnum", "<?php
                 echo $wp_wm_custnum;
                 ?>"]);
-            // Begin own parameters.
+            /* Begin own parameters. */
             wiredminds.push(["setTrackParam", "wm_campaign_key", "utm_campaign"]);
             wiredminds.push(["registerHeatmapEvent", "mousedown"]);
             wiredminds.push(["setTrackParam", "wm_page_name", <?php echo $wp_wm_page_name; ?>]);
             var wmDynamicConf = [];
             <?php foreach($wp_wm_milestones as $key => $value): ?>wmDynamicConf.push(["wm_page_url",<?php echo json_encode($value); ?>, ["setTrackParam", "wm_milestone",<?php echo json_encode($key); ?>]]);
-            <?php endforeach; ?>// End own parameters.
+            <?php endforeach; ?>/* End own parameters. */
             wiredminds.push(["setDynamicParams", wmDynamicConf]);
             wiredminds.push(["count"]);
 
