@@ -10,7 +10,7 @@ Download the current stable release as a zip-file via the releases menu or use t
 1. You must have an active wiredminds leadlab account in order to use the plugin.
 2. Upload the zip-file via the 'Plugins' -> upload section in WordPress.
 3. Activate the plugin at the 'Plugins' section in WordPress.
-4. Enter your wm_custnum and tracking server at "Settings/wiredminds leadlab"
+4. Enter your wm_custnum and tracking server at the menu point "Settings/wiredminds leadlab"
 
 ## Changelog
 ### 1.2
